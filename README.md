@@ -14,6 +14,8 @@ The app does **not** connect to Instagram on your behalf. It does not ask for yo
 
 **Repository:** [https://github.com/zxyandreay/followback-checker](https://github.com/zxyandreay/followback-checker)
 
+Source-available for learning and portfolio review. Commercial use requires permission from the author (see [License](#license)).
+
 ---
 
 ## Key features
@@ -217,4 +219,10 @@ https://ko-fi.com/zxyandreay
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is source-available for learning and portfolio review.
+
+You may view and study the code for personal and educational purposes, but you may not copy, redistribute, publish, resell, monetize, or use this project or modified versions commercially without written permission from the author.
+
+For commercial use, licensing, or permission requests, please contact the author.
+
+See the [LICENSE](LICENSE) file for details.
