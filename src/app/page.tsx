@@ -1,6 +1,7 @@
 "use client";
 
 import { ExportCsvButton } from "@/components/ExportCsvButton";
+import { ExportGuideModal } from "@/components/ExportGuideModal";
 import { PrivacyBanner } from "@/components/PrivacyBanner";
 import type { ResultTabId } from "@/components/ResultsTabs";
 import { ResultsTabs } from "@/components/ResultsTabs";
@@ -19,6 +20,10 @@ function filterUsernames(usernames: string[], query: string): string[] {
   return usernames.filter((u) => u.includes(q));
 }
 
+function errorIncludesUsernameParseFailure(message: string): boolean {
+  return message.includes("no usernames could be read");
+}
+
 const TAB_LABELS: Record<ResultTabId, string> = {
   notFollowingBack: "Not Following Back",
   fansYouDontFollowBack: "Fans You Don’t Follow Back",
@@ -35,6 +40,14 @@ export default function Home() {
   } | null>(null);
   const [activeTab, setActiveTab] = useState<ResultTabId>("notFollowingBack");
   const [search, setSearch] = useState("");
+  const [guideOpen, setGuideOpen] = useState(false);
+
+  const scrollToUpload = useCallback(() => {
+    document.getElementById("upload-section")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, []);
 
   const handleFiles = useCallback(async (files: File[]) => {
     setBusy(true);
@@ -137,10 +150,24 @@ export default function Home() {
             export — no username, password, or login required.
           </p>
           <PrivacyBanner />
+          <button
+            type="button"
+            onClick={() => setGuideOpen(true)}
+            className="text-left text-sm font-medium text-indigo-600 underline-offset-2 hover:underline dark:text-indigo-400"
+          >
+            How to Export Your Instagram Data
+          </button>
         </header>
 
-        <section className="space-y-4 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-          <UploadDropzone onFiles={handleFiles} disabled={busy} />
+        <section
+          id="upload-section"
+          className="space-y-4 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+        >
+          <UploadDropzone
+            onFiles={handleFiles}
+            disabled={busy}
+            onOpenGuide={() => setGuideOpen(true)}
+          />
           {busy && (
             <p className="text-center text-sm text-zinc-500 dark:text-zinc-400">
               Reading export…
@@ -153,9 +180,29 @@ export default function Home() {
             className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-100"
             role="alert"
           >
-            {error}
+            <div className="whitespace-pre-wrap">{error}</div>
+            {errorIncludesUsernameParseFailure(error) && (
+              <div className="mt-4 border-t border-red-200/80 pt-3 dark:border-red-800/60">
+                <p className="mb-2 font-medium text-red-950 dark:text-red-50">
+                  Need help exporting your Instagram data?
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setGuideOpen(true)}
+                  className="rounded-lg bg-red-900 px-3 py-2 text-sm font-medium text-white hover:bg-red-800 dark:bg-red-800 dark:hover:bg-red-700"
+                >
+                  View guide
+                </button>
+              </div>
+            )}
           </div>
         )}
+
+        <ExportGuideModal
+          open={guideOpen}
+          onClose={() => setGuideOpen(false)}
+          onScrollToUpload={scrollToUpload}
+        />
 
         {compare && totals && (
           <section className="space-y-6">
