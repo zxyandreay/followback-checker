@@ -5,14 +5,9 @@ import { useCallback, useRef, useState } from "react";
 type UploadDropzoneProps = {
   onFiles: (files: File[]) => void;
   disabled?: boolean;
-  onOpenGuide?: () => void;
 };
 
-export function UploadDropzone({
-  onFiles,
-  disabled,
-  onOpenGuide,
-}: UploadDropzoneProps) {
+export function UploadDropzone({ onFiles, disabled }: UploadDropzoneProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState(false);
 
@@ -25,37 +20,7 @@ export function UploadDropzone({
   );
 
   return (
-    <div className="w-full space-y-3">
-      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-        <div className="flex flex-wrap gap-2">
-          <span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-900 dark:bg-amber-950/80 dark:text-amber-100">
-            JSON required
-          </span>
-          <span className="rounded-full bg-sky-100 px-2.5 py-1 text-xs font-medium text-sky-900 dark:bg-sky-950/80 dark:text-sky-100">
-            All time recommended
-          </span>
-          <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-900 dark:bg-emerald-950/80 dark:text-emerald-100">
-            No password needed
-          </span>
-          <span className="rounded-full bg-violet-100 px-2.5 py-1 text-xs font-medium text-violet-900 dark:bg-violet-950/80 dark:text-violet-100">
-            Local processing
-          </span>
-        </div>
-        {onOpenGuide && (
-          <button
-            type="button"
-            disabled={disabled}
-            onClick={onOpenGuide}
-            className="shrink-0 text-left text-sm font-medium text-indigo-600 underline-offset-2 hover:underline disabled:opacity-50 dark:text-indigo-400"
-          >
-            How to export your Instagram data
-          </button>
-        )}
-      </div>
-      <p className="text-sm text-zinc-600 dark:text-zinc-400">
-        For best results, export Followers and following only, set Date range to
-        All time, and choose JSON format.
-      </p>
+    <div className="w-full">
       <button
         type="button"
         disabled={disabled}
@@ -90,22 +55,10 @@ export function UploadDropzone({
         ].join(" ")}
       >
         <span className="text-base font-medium text-zinc-900 dark:text-zinc-50">
-          Drop your Instagram export ZIP or JSON files here
+          Drop your export ZIP or JSON files here
         </span>
         <span className="max-w-md text-sm text-zinc-600 dark:text-zinc-400">
-          Or click to browse — use the official JSON export (ZIP), or select{" "}
-          <code className="rounded bg-zinc-200/80 px-1 py-0.5 text-xs dark:bg-zinc-800">
-            following.json
-          </code>{" "}
-          /{" "}
-          <code className="rounded bg-zinc-200/80 px-1 py-0.5 text-xs dark:bg-zinc-800">
-            followers_*.json
-          </code>{" "}
-          from{" "}
-          <code className="rounded bg-zinc-200/80 px-1 py-0.5 text-xs dark:bg-zinc-800">
-            connections/followers_and_following
-          </code>
-          .
+          Or click to browse — official Instagram JSON export only.
         </span>
       </button>
       <input

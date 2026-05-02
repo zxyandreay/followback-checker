@@ -139,31 +139,27 @@ export default function Home() {
             FollowBack Checker
           </h1>
           <p className="max-w-2xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
-            Compare your official Instagram{" "}
+            Compare your{" "}
             <strong className="font-medium text-zinc-800 dark:text-zinc-200">
               Following &amp; Followers
             </strong>{" "}
-            export — no username, password, or login required.
+            lists from Meta&apos;s official export.{" "}
+            <button
+              type="button"
+              onClick={() => setGuideOpen(true)}
+              className="font-medium text-indigo-600 underline-offset-2 hover:underline dark:text-indigo-400"
+            >
+              How to export your data
+            </button>
           </p>
           <PrivacyBanner />
-          <button
-            type="button"
-            onClick={() => setGuideOpen(true)}
-            className="text-left text-sm font-medium text-indigo-600 underline-offset-2 hover:underline dark:text-indigo-400"
-          >
-            How to Export Your Instagram Data
-          </button>
         </header>
 
         <section
           id="upload-section"
           className="space-y-4 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
         >
-          <UploadDropzone
-            onFiles={handleFiles}
-            disabled={busy}
-            onOpenGuide={() => setGuideOpen(true)}
-          />
+          <UploadDropzone onFiles={handleFiles} disabled={busy} />
           {busy && (
             <p className="text-center text-sm text-zinc-500 dark:text-zinc-400">
               Reading export…
