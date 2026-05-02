@@ -1,14 +1,35 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
+
+export type UploadPickerMode = "json" | "zipOrJson";
+
+export type UploadDropzoneHandle = {
+  /** Opens the OS file picker. `json` filters to JSON files; `zipOrJson` allows ZIP and JSON. */
+  openFilePicker: (mode: UploadPickerMode) => void;
+};
 
 type UploadDropzoneProps = {
   onFiles: (files: File[]) => void;
   disabled?: boolean;
 };
 
-export function UploadDropzone({ onFiles, disabled }: UploadDropzoneProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
+const ACCEPT_ZIP_AND_JSON =
+  ".zip,.json,application/zip,application/json";
+const ACCEPT_JSON_ONLY = ".json,application/json";
+
+export const UploadDropzone = forwardRef<
+  UploadDropzoneHandle,
+  UploadDropzoneProps
+>(function UploadDropzone({ onFiles, disabled }, ref) {
+  const zipJsonInputRef = useRef<HTMLInputElement>(null);
+  const jsonOnlyInputRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState(false);
 
   const handleFiles = useCallback(
@@ -19,12 +40,27 @@ export function UploadDropzone({ onFiles, disabled }: UploadDropzoneProps) {
     [disabled, onFiles],
   );
 
+  useImperativeHandle(
+    ref,
+    () => ({
+      openFilePicker(mode: UploadPickerMode) {
+        if (disabled) return;
+        if (mode === "json") {
+          jsonOnlyInputRef.current?.click();
+        } else {
+          zipJsonInputRef.current?.click();
+        }
+      },
+    }),
+    [disabled],
+  );
+
   return (
     <div className="w-full">
       <button
         type="button"
         disabled={disabled}
-        onClick={() => inputRef.current?.click()}
+        onClick={() => zipJsonInputRef.current?.click()}
         onDragEnter={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -62,10 +98,22 @@ export function UploadDropzone({ onFiles, disabled }: UploadDropzoneProps) {
         </span>
       </button>
       <input
-        ref={inputRef}
+        ref={zipJsonInputRef}
         type="file"
         className="sr-only"
-        accept=".zip,.json,application/zip,application/json"
+        accept={ACCEPT_ZIP_AND_JSON}
+        multiple
+        disabled={disabled}
+        onChange={(e) => {
+          handleFiles(e.target.files);
+          e.target.value = "";
+        }}
+      />
+      <input
+        ref={jsonOnlyInputRef}
+        type="file"
+        className="sr-only"
+        accept={ACCEPT_JSON_ONLY}
         multiple
         disabled={disabled}
         onChange={(e) => {
@@ -75,4 +123,4 @@ export function UploadDropzone({ onFiles, disabled }: UploadDropzoneProps) {
       />
     </div>
   );
-}
+});
