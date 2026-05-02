@@ -67,37 +67,15 @@ export function ExportGuideModal({
 
         <div className="flex-1 overflow-y-auto px-5 py-4 text-sm leading-relaxed">
           <p className="mb-4 text-zinc-600 dark:text-zinc-400">
-            To use FollowBack Checker, you need to download your official Instagram
-            data export. The app does not need your Instagram password. Your files
-            are processed locally in your browser.
+            Request a JSON export that includes <strong>Followers and following</strong>{" "}
+            through Instagram&apos;s Accounts Center (steps below).
           </p>
 
-          <div className="mb-4 rounded-xl border-2 border-indigo-400 bg-indigo-50 px-4 py-3 text-indigo-950 dark:border-indigo-500 dark:bg-indigo-950/40 dark:text-indigo-50">
-            <p className="text-center text-sm font-semibold">
-              Best export settings: Followers and following only + All time + JSON
+          <section className="mb-6 rounded-xl border-2 border-indigo-400 bg-indigo-50 px-4 py-3 text-indigo-950 dark:border-indigo-500 dark:bg-indigo-950/40 dark:text-indigo-50">
+            <p className="mb-2 text-center text-sm font-semibold">
+              Best export settings
             </p>
-          </div>
-
-          <div className="mb-5 flex flex-wrap gap-2">
-            <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-900 dark:bg-amber-950/80 dark:text-amber-100">
-              JSON required
-            </span>
-            <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-medium text-sky-900 dark:bg-sky-950/80 dark:text-sky-100">
-              All time recommended
-            </span>
-            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-900 dark:bg-emerald-950/80 dark:text-emerald-100">
-              No password needed
-            </span>
-            <span className="rounded-full bg-violet-100 px-3 py-1 text-xs font-medium text-violet-900 dark:bg-violet-950/80 dark:text-violet-100">
-              Local processing
-            </span>
-          </div>
-
-          <section className="mb-5">
-            <h3 className="mb-2 font-semibold text-zinc-900 dark:text-zinc-50">
-              Recommended Export Settings
-            </h3>
-            <ul className="list-disc space-y-1 pl-5 text-zinc-600 dark:text-zinc-400">
+            <ul className="list-disc space-y-1 pl-5 text-sm">
               <li>
                 <strong>Data to export:</strong> Followers and following only
               </li>
@@ -105,29 +83,21 @@ export function ExportGuideModal({
                 <strong>Date range:</strong> All time
               </li>
               <li>
-                <strong>Format:</strong> JSON
+                <strong>Format:</strong> JSON (not HTML)
               </li>
               <li>
                 <strong>Media quality:</strong> Any option is okay
               </li>
             </ul>
-          </section>
-
-          <section className="mb-6 rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-700 dark:bg-zinc-950/50">
-            <h3 className="mb-2 font-semibold text-zinc-900 dark:text-zinc-50">
-              Why these settings matter
-            </h3>
-            <p className="text-zinc-600 dark:text-zinc-400">
-              Selecting only <strong>Followers and following</strong> keeps the
-              export smaller and faster to prepare. Choosing{" "}
-              <strong>All time</strong> helps make sure Instagram includes your
-              complete follower and following lists. Shorter date ranges may only
-              export recent relationship activity and can result in missing files.
+            <p className="mt-3 border-t border-indigo-200/80 pt-3 text-xs leading-snug dark:border-indigo-700/80">
+              <strong>Why:</strong> A narrow export is smaller and faster.{" "}
+              <strong>All time</strong> helps Instagram include full follower and
+              following lists; shorter ranges may omit files this app needs.
             </p>
           </section>
 
           <h3 className="mb-3 font-semibold text-zinc-900 dark:text-zinc-50">
-            Step-by-step guide
+            Steps
           </h3>
           <ol className="mb-6 list-decimal space-y-3 pl-5 marker:font-semibold">
             <li>
@@ -213,7 +183,7 @@ export function ExportGuideModal({
             </ul>
           </section>
 
-          <section className="mb-6">
+          <section className="mb-5">
             <h3 className="mb-2 font-semibold text-zinc-900 dark:text-zinc-50">
               Common mistakes
             </h3>
@@ -251,30 +221,12 @@ export function ExportGuideModal({
             </ol>
           </section>
 
-          <p className="mb-4 rounded-lg border border-emerald-200 bg-emerald-50/90 px-3 py-2 text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-100">
-            <strong className="font-semibold">Privacy note:</strong> FollowBack
-            Checker does not ask for your Instagram username, password, or login.
-            Your data is processed locally in your browser and is not uploaded to a
-            server.
+          <p className="mb-4 text-xs text-zinc-500 dark:text-zinc-400">
+            <strong className="text-zinc-700 dark:text-zinc-300">JSON files:</strong>{" "}
+            Multi-select <code className="text-xs">following.json</code> and all{" "}
+            <code className="text-xs">followers_*.json</code>, or use the button
+            below.
           </p>
-
-          <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 dark:border-zinc-700 dark:bg-zinc-950/50">
-            <p className="mb-2 font-medium text-zinc-800 dark:text-zinc-200">
-              I only have JSON files
-            </p>
-            <p className="text-zinc-600 dark:text-zinc-400">
-              You can upload{" "}
-              <code className="rounded bg-white px-1 text-xs dark:bg-zinc-900">
-                following.json
-              </code>{" "}
-              and every{" "}
-              <code className="rounded bg-white px-1 text-xs dark:bg-zinc-900">
-                followers_*.json
-              </code>{" "}
-              file directly — select them together (multi-select). Use the button
-              below to return to the upload area.
-            </p>
-          </div>
         </div>
 
         <div className="flex flex-col gap-2 border-t border-zinc-200 bg-zinc-50 px-5 py-4 dark:border-zinc-700 dark:bg-zinc-950/80 sm:flex-row sm:flex-wrap sm:justify-end">
@@ -283,7 +235,7 @@ export function ExportGuideModal({
             onClick={handleJsonOnly}
             className="order-2 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-zinc-800 hover:bg-zinc-100 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 sm:order-1"
           >
-            I only have JSON files
+            I only have JSON files — go to upload
           </button>
           <button
             type="button"

@@ -1,79 +1,26 @@
 # FollowBack Checker
 
-Compare your official Instagram **Following** and **Followers** data export in the browser. Upload your ZIP or JSON files from `connections/followers_and_following` — no Instagram login, username, or password. All parsing runs locally on your device.
+Compare Instagram **following vs followers** using Meta’s official JSON export in your browser — no login to this app.
 
 - **Live demo:** https://zxyandreay.github.io/followback-checker/
 - **Repository:** https://github.com/zxyandreay/followback-checker/
 
 ## Features
 
-- Drag-and-drop or multi-file upload (Instagram export ZIP or loose JSON)
+- Drag-and-drop or multi-file upload (ZIP or loose JSON from your export)
 - Tabs: not following back, people you don’t follow back, mutuals
-- Search, counts, and CSV export of the filtered list
-- Privacy: data stays in your browser
-- In-app guide: **How to Export Your Instagram Data** (Accounts Center, JSON export, where files live)
+- Search, counts, CSV export
+- Built-in **How to export your data** guide (Accounts Center walkthrough)
 
 ## How to Export Your Instagram Data
 
-To use FollowBack Checker, you need to download your **official Instagram data export**. The app does **not** need your Instagram password. Your files are processed **locally in your browser**.
+Use Meta’s **Download / Export your information** in **Accounts Center** → **Your information and permissions**. For reliable results with this app:
 
-**Best export settings:** Followers and following only + All time + JSON
+**Followers and following only · Date range: All time · Format: JSON**
 
-### Recommended Export Settings
+Upload the official **ZIP**, or multi-select `following.json` and every `followers_*.json` from `connections/followers_and_following/` inside the archive.
 
-- **Data to export:** Followers and following only  
-- **Date range:** All time  
-- **Format:** JSON  
-- **Media quality:** Any option is okay  
-
-### Why these settings matter
-
-Selecting only **Followers and following** keeps the export smaller and faster to prepare. Choosing **All time** helps make sure Instagram includes your complete follower and following lists. Shorter date ranges may only export recent relationship activity and can result in missing files.
-
-### Step-by-step
-
-1. Open the Instagram app or Instagram website and log in.
-2. Go to your profile (tap your profile picture).
-3. Open **Settings and privacy** (menu icon, usually three lines, top-right).
-4. Open **Accounts Center**.
-5. Open **Your information and permissions**.
-6. Tap **Export your information** or **Download your information** (wording may vary).
-7. Select the Instagram account to export.
-8. Choose **Followers and following only**. Avoid exporting all data unless necessary — it creates a much larger ZIP and takes longer.
-9. Set the date range to **All time**.
-10. Choose **JSON** (not HTML).
-11. Submit the export request and wait for Meta to prepare the download.
-12. Download the **ZIP** when ready.
-13. Upload the ZIP to FollowBack Checker (or upload JSON files as described below).
-
-### Where the needed files are usually located
-
-`connections/followers_and_following/`
-
-**Required files:**
-
-- `following.json`
-- `followers_1.json`
-- `followers_2.json`, `followers_3.json`, etc., if your export splits followers across multiple files
-
-### Upload options
-
-- **ZIP:** Upload the official export ZIP as-is — the app detects the files above.
-- **JSON only:** Multi-select `following.json` and every `followers_*.json` from that folder.
-
-### Common mistakes
-
-1. Choosing **HTML** instead of JSON — this app needs JSON.
-2. Choosing a **short date range** — may omit complete followers/following files.
-3. Uploading **only** `following.json` — you also need at least one `followers_*.json`.
-4. Exporting **all Instagram data** — may still work, but the ZIP is larger and slower to prepare.
-5. Uploading **screenshots** — not supported.
-6. Uploading the **wrong ZIP** — use the file from your official data export only.
-7. **Renaming or editing** files — prefer uploading the original ZIP unchanged.
-
-### Privacy
-
-FollowBack Checker does not ask for your Instagram **username**, **password**, or **login**. Your data is processed locally in your browser and is not uploaded to a server.
+Full steps, why those settings matter, required files, common mistakes, and privacy details are in the [**live app**](https://zxyandreay.github.io/followback-checker/) — open **How to export your data** from the header.
 
 ## Local setup
 
