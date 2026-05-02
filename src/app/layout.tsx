@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SupportKofi } from "@/components/SupportKofi";
+import { SiteFooterCredits } from "@/components/SiteFooterCredits";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -31,9 +31,9 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col">
         {children}
-        <footer className="mt-auto border-t border-zinc-200/80 bg-zinc-100 px-4 py-6 dark:border-zinc-800 dark:bg-zinc-950 sm:px-6">
+        <footer className="mt-auto border-t border-zinc-200/40 bg-zinc-100 px-4 py-4 dark:border-zinc-800/60 dark:bg-zinc-950 sm:px-6">
           <div className="mx-auto max-w-5xl">
-            <SupportKofi />
+            <SiteFooterCredits />
           </div>
         </footer>
       </body>
