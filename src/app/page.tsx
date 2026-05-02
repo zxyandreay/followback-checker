@@ -3,8 +3,6 @@
 import { ExportCsvButton } from "@/components/ExportCsvButton";
 import { ExportGuideModal } from "@/components/ExportGuideModal";
 import { PrivacyBanner } from "@/components/PrivacyBanner";
-import type { ResultTabId } from "@/components/ResultsTabs";
-import { ResultsTabs } from "@/components/ResultsTabs";
 import { SummaryCounts } from "@/components/SummaryCounts";
 import {
   UploadDropzone,
@@ -14,6 +12,8 @@ import { UsernameList } from "@/components/UsernameList";
 import type { CompareResult } from "@/lib/compare-follow-lists";
 import { compareFollowLists } from "@/lib/compare-follow-lists";
 import type { CsvRow } from "@/lib/csv";
+import type { ResultCategoryId } from "@/lib/result-category";
+import { CATEGORY_LABELS } from "@/lib/result-category";
 import { parseInstagramExportFromFiles } from "@/lib/instagram-export";
 import { useCallback, useMemo, useRef, useState } from "react";
 
@@ -23,12 +23,6 @@ function filterUsernames(usernames: string[], query: string): string[] {
   return usernames.filter((u) => u.includes(q));
 }
 
-const TAB_LABELS: Record<ResultTabId, string> = {
-  notFollowingBack: "Not Following Back",
-  peopleYouDontFollowBack: "People You Don’t Follow Back",
-  mutuals: "Mutuals",
-};
-
 export default function Home() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +31,12 @@ export default function Home() {
     following: number;
     followers: number;
   } | null>(null);
-  const [activeTab, setActiveTab] = useState<ResultTabId>("notFollowingBack");
+  const [sourceLists, setSourceLists] = useState<{
+    following: string[];
+    followers: string[];
+  } | null>(null);
+  const [activeCategory, setActiveCategory] =
+    useState<ResultCategoryId>("notFollowingBack");
   const [search, setSearch] = useState("");
   const [guideOpen, setGuideOpen] = useState(false);
   const uploadDropzoneRef = useRef<UploadDropzoneHandle>(null);
@@ -58,17 +57,38 @@ export default function Home() {
     [scrollToUpload],
   );
 
+  const resetForNewUpload = useCallback(() => {
+    setCompare(null);
+    setTotals(null);
+    setSourceLists(null);
+    setError(null);
+    setSearch("");
+    setActiveCategory("notFollowingBack");
+    scrollToUpload();
+    // Still part of the same user gesture; may be blocked in some browsers.
+    queueMicrotask(() =>
+      uploadDropzoneRef.current?.openFilePicker("zipOrJson"),
+    );
+  }, [scrollToUpload]);
+
   const handleFiles = useCallback(async (files: File[]) => {
     setBusy(true);
     setError(null);
     setCompare(null);
     setTotals(null);
+    setSourceLists(null);
     try {
       const result = await parseInstagramExportFromFiles(files);
       if (!result.ok) {
         setError(result.message);
         return;
       }
+      const followingSorted = [...result.followingUsernames].sort((a, b) =>
+        a.localeCompare(b),
+      );
+      const followersSorted = [...result.followerUsernames].sort((a, b) =>
+        a.localeCompare(b),
+      );
       const compared = compareFollowLists(
         result.followingUsernames,
         result.followerUsernames,
@@ -78,7 +98,11 @@ export default function Home() {
         following: result.followingUsernames.length,
         followers: result.followerUsernames.length,
       });
-      setActiveTab("notFollowingBack");
+      setSourceLists({
+        following: followingSorted,
+        followers: followersSorted,
+      });
+      setActiveCategory("notFollowingBack");
       setSearch("");
     } catch {
       setError(
@@ -90,18 +114,20 @@ export default function Home() {
   }, []);
 
   const activeList = useMemo(() => {
-    if (!compare) return [];
-    switch (activeTab) {
+    if (!compare || !sourceLists) return [];
+    switch (activeCategory) {
+      case "following":
+        return sourceLists.following;
+      case "followers":
+        return sourceLists.followers;
       case "notFollowingBack":
         return compare.notFollowingBack;
       case "peopleYouDontFollowBack":
         return compare.peopleYouDontFollowBack;
       case "mutuals":
         return compare.mutuals;
-      default:
-        return [];
     }
-  }, [compare, activeTab]);
+  }, [compare, sourceLists, activeCategory]);
 
   const filteredList = useMemo(
     () => filterUsernames(activeList, search),
@@ -112,37 +138,20 @@ export default function Home() {
     () =>
       filteredList.map((username) => ({
         username,
-        category: TAB_LABELS[activeTab],
+        category: CATEGORY_LABELS[activeCategory],
       })),
-    [filteredList, activeTab],
+    [filteredList, activeCategory],
   );
 
-  const tabDefs = useMemo(() => {
-    if (!compare) return [];
-    return [
-      {
-        id: "notFollowingBack" as const,
-        label: TAB_LABELS.notFollowingBack,
-        count: compare.notFollowingBack.length,
-      },
-      {
-        id: "peopleYouDontFollowBack" as const,
-        label: TAB_LABELS.peopleYouDontFollowBack,
-        count: compare.peopleYouDontFollowBack.length,
-      },
-      {
-        id: "mutuals" as const,
-        label: TAB_LABELS.mutuals,
-        count: compare.mutuals.length,
-      },
-    ];
-  }, [compare]);
-
-  const emptyMessages: Record<ResultTabId, string> = {
+  const emptyMessages: Record<ResultCategoryId, string> = {
+    following: "No accounts in this list.",
+    followers: "No accounts in this list.",
     notFollowingBack: "Everyone you follow follows you back.",
     peopleYouDontFollowBack: "You follow everyone who follows you.",
     mutuals: "No mutual follows found.",
   };
+
+  const categoryHeading = CATEGORY_LABELS[activeCategory];
 
   return (
     <div className="flex flex-1 flex-col bg-zinc-100 dark:bg-zinc-950">
@@ -214,7 +223,7 @@ export default function Home() {
           onJsonFilesReady={() => afterGuideClosePickFiles("json")}
         />
 
-        {compare && totals && (
+        {compare && totals && sourceLists && (
           <section className="space-y-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">
@@ -222,15 +231,10 @@ export default function Home() {
               </h2>
               <button
                 type="button"
-                onClick={() => {
-                  setCompare(null);
-                  setTotals(null);
-                  setError(null);
-                  setSearch("");
-                }}
-                className="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+                onClick={resetForNewUpload}
+                className="inline-flex items-center justify-center rounded-lg border border-indigo-600 bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-500 dark:border-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-400"
               >
-                Upload another export
+                Upload New Export
               </button>
             </div>
 
@@ -240,14 +244,20 @@ export default function Home() {
               notFollowingBack={compare.notFollowingBack.length}
               peopleYouDontFollowBack={compare.peopleYouDontFollowBack.length}
               mutuals={compare.mutuals.length}
+              selectedCategory={activeCategory}
+              onSelect={setActiveCategory}
             />
 
             <div className="space-y-4 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-              <ResultsTabs
-                tabs={tabDefs}
-                active={activeTab}
-                onChange={setActiveTab}
-              />
+              <div>
+                <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50">
+                  {categoryHeading}
+                </h3>
+                <p className="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
+                  {activeList.length.toLocaleString()}{" "}
+                  {activeList.length === 1 ? "account" : "accounts"}
+                </p>
+              </div>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <label className="flex flex-1 flex-col gap-1 text-sm sm:max-w-md">
@@ -267,7 +277,7 @@ export default function Home() {
 
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 Showing {filteredList.length.toLocaleString()} of{" "}
-                {activeList.length.toLocaleString()} in this tab
+                {activeList.length.toLocaleString()} in {categoryHeading}
                 {search.trim() ? " (filtered)" : ""}. CSV includes only this
                 filtered list.
               </p>
@@ -277,7 +287,7 @@ export default function Home() {
                 emptyMessage={
                   search.trim()
                     ? "No usernames match your search."
-                    : emptyMessages[activeTab]
+                    : emptyMessages[activeCategory]
                 }
               />
             </div>
