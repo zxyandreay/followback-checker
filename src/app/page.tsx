@@ -6,13 +6,16 @@ import { PrivacyBanner } from "@/components/PrivacyBanner";
 import type { ResultTabId } from "@/components/ResultsTabs";
 import { ResultsTabs } from "@/components/ResultsTabs";
 import { SummaryCounts } from "@/components/SummaryCounts";
-import { UploadDropzone } from "@/components/UploadDropzone";
+import {
+  UploadDropzone,
+  type UploadDropzoneHandle,
+} from "@/components/UploadDropzone";
 import { UsernameList } from "@/components/UsernameList";
 import type { CompareResult } from "@/lib/compare-follow-lists";
 import { compareFollowLists } from "@/lib/compare-follow-lists";
 import type { CsvRow } from "@/lib/csv";
 import { parseInstagramExportFromFiles } from "@/lib/instagram-export";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 function filterUsernames(usernames: string[], query: string): string[] {
   const q = query.trim().toLowerCase();
@@ -37,6 +40,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<ResultTabId>("notFollowingBack");
   const [search, setSearch] = useState("");
   const [guideOpen, setGuideOpen] = useState(false);
+  const uploadDropzoneRef = useRef<UploadDropzoneHandle>(null);
 
   const scrollToUpload = useCallback(() => {
     document.getElementById("upload-section")?.scrollIntoView({
@@ -44,6 +48,15 @@ export default function Home() {
       block: "start",
     });
   }, []);
+
+  const afterGuideClosePickFiles = useCallback(
+    (mode: "json" | "zipOrJson") => {
+      setGuideOpen(false);
+      scrollToUpload();
+      queueMicrotask(() => uploadDropzoneRef.current?.openFilePicker(mode));
+    },
+    [scrollToUpload],
+  );
 
   const handleFiles = useCallback(async (files: File[]) => {
     setBusy(true);
@@ -159,7 +172,11 @@ export default function Home() {
           id="upload-section"
           className="space-y-4 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
         >
-          <UploadDropzone onFiles={handleFiles} disabled={busy} />
+          <UploadDropzone
+            ref={uploadDropzoneRef}
+            onFiles={handleFiles}
+            disabled={busy}
+          />
           {busy && (
             <p className="text-center text-sm text-zinc-500 dark:text-zinc-400">
               Reading export…
@@ -193,7 +210,8 @@ export default function Home() {
         <ExportGuideModal
           open={guideOpen}
           onClose={() => setGuideOpen(false)}
-          onScrollToUpload={scrollToUpload}
+          onZipReady={() => afterGuideClosePickFiles("zipOrJson")}
+          onJsonFilesReady={() => afterGuideClosePickFiles("json")}
         />
 
         {compare && totals && (

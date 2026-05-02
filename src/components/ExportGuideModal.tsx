@@ -5,13 +5,17 @@ import { useEffect, useRef } from "react";
 type ExportGuideModalProps = {
   open: boolean;
   onClose: () => void;
-  onScrollToUpload: () => void;
+  /** ZIP-focused flow: close guide, scroll to upload, open file picker (ZIP + JSON). */
+  onZipReady: () => void;
+  /** JSON-only flow: close guide, scroll to upload, open file picker (JSON only). */
+  onJsonFilesReady: () => void;
 };
 
 export function ExportGuideModal({
   open,
   onClose,
-  onScrollToUpload,
+  onZipReady,
+  onJsonFilesReady,
 }: ExportGuideModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -34,16 +38,6 @@ export function ExportGuideModal({
       el.close();
     }
   }, [open]);
-
-  const handleZipReady = () => {
-    onClose();
-    onScrollToUpload();
-  };
-
-  const handleJsonOnly = () => {
-    onClose();
-    onScrollToUpload();
-  };
 
   return (
     <dialog
@@ -224,25 +218,25 @@ export function ExportGuideModal({
           <p className="mb-4 text-xs text-zinc-500 dark:text-zinc-400">
             <strong className="text-zinc-700 dark:text-zinc-300">JSON files:</strong>{" "}
             Multi-select <code className="text-xs">following.json</code> and all{" "}
-            <code className="text-xs">followers_*.json</code>, or use the button
-            below.
+            <code className="text-xs">followers_*.json</code>, or use{" "}
+            <strong>Choose files</strong> below (JSON picker).
           </p>
         </div>
 
         <div className="flex flex-col gap-2 border-t border-zinc-200 bg-zinc-50 px-5 py-4 dark:border-zinc-700 dark:bg-zinc-950/80 sm:flex-row sm:flex-wrap sm:justify-end">
           <button
             type="button"
-            onClick={handleJsonOnly}
+            onClick={onJsonFilesReady}
             className="order-2 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium text-zinc-800 hover:bg-zinc-100 dark:border-zinc-600 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 sm:order-1"
           >
-            I only have JSON files — go to upload
+            I only have JSON files — choose files
           </button>
           <button
             type="button"
-            onClick={handleZipReady}
+            onClick={onZipReady}
             className="order-1 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-500 dark:bg-indigo-500 dark:hover:bg-indigo-400 sm:order-2"
           >
-            I have my ZIP file — upload now
+            I have my ZIP — choose file
           </button>
         </div>
       </div>
