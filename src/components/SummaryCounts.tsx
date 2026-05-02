@@ -2,7 +2,7 @@ type SummaryCountsProps = {
   totalFollowing: number;
   totalFollowers: number;
   notFollowingBack: number;
-  fansYouDontFollowBack: number;
+  peopleYouDontFollowBack: number;
   mutuals: number;
 };
 
@@ -10,14 +10,14 @@ export function SummaryCounts({
   totalFollowing,
   totalFollowers,
   notFollowingBack,
-  fansYouDontFollowBack,
+  peopleYouDontFollowBack,
   mutuals,
 }: SummaryCountsProps) {
   const items = [
     { label: "Following", value: totalFollowing },
     { label: "Followers", value: totalFollowers },
     { label: "Not following back", value: notFollowingBack },
-    { label: "Fans you don’t follow back", value: fansYouDontFollowBack },
+    { label: "People you don’t follow back", value: peopleYouDontFollowBack },
     { label: "Mutuals", value: mutuals },
   ];
 

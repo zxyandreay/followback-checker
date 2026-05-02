@@ -1,6 +1,6 @@
 "use client";
 
-export type ResultTabId = "notFollowingBack" | "fansYouDontFollowBack" | "mutuals";
+export type ResultTabId = "notFollowingBack" | "peopleYouDontFollowBack" | "mutuals";
 
 type TabDef = { id: ResultTabId; label: string; count: number };
 

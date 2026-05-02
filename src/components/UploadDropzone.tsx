@@ -29,13 +29,16 @@ export function UploadDropzone({
       <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <div className="flex flex-wrap gap-2">
           <span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-900 dark:bg-amber-950/80 dark:text-amber-100">
-            Use JSON, not HTML
+            JSON required
+          </span>
+          <span className="rounded-full bg-sky-100 px-2.5 py-1 text-xs font-medium text-sky-900 dark:bg-sky-950/80 dark:text-sky-100">
+            All time recommended
           </span>
           <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-medium text-emerald-900 dark:bg-emerald-950/80 dark:text-emerald-100">
             No password needed
           </span>
-          <span className="rounded-full bg-indigo-100 px-2.5 py-1 text-xs font-medium text-indigo-900 dark:bg-indigo-950/80 dark:text-indigo-100">
-            Upload ZIP or JSON files
+          <span className="rounded-full bg-violet-100 px-2.5 py-1 text-xs font-medium text-violet-900 dark:bg-violet-950/80 dark:text-violet-100">
+            Local processing
           </span>
         </div>
         {onOpenGuide && (
@@ -49,6 +52,10 @@ export function UploadDropzone({
           </button>
         )}
       </div>
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        For best results, export Followers and following only, set Date range to
+        All time, and choose JSON format.
+      </p>
       <button
         type="button"
         disabled={disabled}
