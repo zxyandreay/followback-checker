@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SupportKofi } from "@/components/SupportKofi";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -28,7 +29,14 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <footer className="mt-auto border-t border-zinc-200/80 bg-zinc-100 px-4 py-6 dark:border-zinc-800 dark:bg-zinc-950 sm:px-6">
+          <div className="mx-auto max-w-5xl">
+            <SupportKofi variant="compact" />
+          </div>
+        </footer>
+      </body>
     </html>
   );
 }
