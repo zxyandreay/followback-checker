@@ -66,9 +66,7 @@ Next.js (App Router), TypeScript, Tailwind CSS, client-side parsing with [JSZip]
 
 ## Support
 
-If you find FollowBack Checker useful, you can support the project here:
-
-https://ko-fi.com/zxyandreay
+Made by zxyandreay — optional tip jar on [Ko-fi](https://ko-fi.com/zxyandreay).
 
 ## License
 
