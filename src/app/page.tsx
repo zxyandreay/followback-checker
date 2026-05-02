@@ -20,13 +20,9 @@ function filterUsernames(usernames: string[], query: string): string[] {
   return usernames.filter((u) => u.includes(q));
 }
 
-function errorIncludesUsernameParseFailure(message: string): boolean {
-  return message.includes("no usernames could be read");
-}
-
 const TAB_LABELS: Record<ResultTabId, string> = {
   notFollowingBack: "Not Following Back",
-  fansYouDontFollowBack: "Fans You Don’t Follow Back",
+  peopleYouDontFollowBack: "People You Don’t Follow Back",
   mutuals: "Mutuals",
 };
 
@@ -85,8 +81,8 @@ export default function Home() {
     switch (activeTab) {
       case "notFollowingBack":
         return compare.notFollowingBack;
-      case "fansYouDontFollowBack":
-        return compare.fansYouDontFollowBack;
+      case "peopleYouDontFollowBack":
+        return compare.peopleYouDontFollowBack;
       case "mutuals":
         return compare.mutuals;
       default:
@@ -117,9 +113,9 @@ export default function Home() {
         count: compare.notFollowingBack.length,
       },
       {
-        id: "fansYouDontFollowBack" as const,
-        label: TAB_LABELS.fansYouDontFollowBack,
-        count: compare.fansYouDontFollowBack.length,
+        id: "peopleYouDontFollowBack" as const,
+        label: TAB_LABELS.peopleYouDontFollowBack,
+        count: compare.peopleYouDontFollowBack.length,
       },
       {
         id: "mutuals" as const,
@@ -131,7 +127,7 @@ export default function Home() {
 
   const emptyMessages: Record<ResultTabId, string> = {
     notFollowingBack: "Everyone you follow follows you back.",
-    fansYouDontFollowBack: "You follow everyone who follows you.",
+    peopleYouDontFollowBack: "You follow everyone who follows you.",
     mutuals: "No mutual follows found.",
   };
 
@@ -181,20 +177,20 @@ export default function Home() {
             role="alert"
           >
             <div className="whitespace-pre-wrap">{error}</div>
-            {errorIncludesUsernameParseFailure(error) && (
-              <div className="mt-4 border-t border-red-200/80 pt-3 dark:border-red-800/60">
-                <p className="mb-2 font-medium text-red-950 dark:text-red-50">
+            <div className="mt-4 border-t border-red-200/80 pt-3 dark:border-red-800/60">
+              <p className="mb-2 text-red-950 dark:text-red-50">
+                <span className="font-medium">
                   Need help exporting your Instagram data?
-                </p>
+                </span>{" "}
                 <button
                   type="button"
                   onClick={() => setGuideOpen(true)}
-                  className="rounded-lg bg-red-900 px-3 py-2 text-sm font-medium text-white hover:bg-red-800 dark:bg-red-800 dark:hover:bg-red-700"
+                  className="font-semibold text-indigo-700 underline underline-offset-2 hover:text-indigo-600 dark:text-indigo-300 dark:hover:text-indigo-200"
                 >
                   View guide
                 </button>
-              </div>
-            )}
+              </p>
+            </div>
           </div>
         )}
 
@@ -228,7 +224,7 @@ export default function Home() {
               totalFollowing={totals.following}
               totalFollowers={totals.followers}
               notFollowingBack={compare.notFollowingBack.length}
-              fansYouDontFollowBack={compare.fansYouDontFollowBack.length}
+              peopleYouDontFollowBack={compare.peopleYouDontFollowBack.length}
               mutuals={compare.mutuals.length}
             />
 

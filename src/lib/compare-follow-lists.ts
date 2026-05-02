@@ -1,6 +1,6 @@
 export type CompareResult = {
   notFollowingBack: string[];
-  fansYouDontFollowBack: string[];
+  peopleYouDontFollowBack: string[];
   mutuals: string[];
 };
 
@@ -15,7 +15,7 @@ export function compareFollowLists(
     .filter((u) => !followerSet.has(u))
     .sort((a, b) => a.localeCompare(b));
 
-  const fansYouDontFollowBack = [...followerSet]
+  const peopleYouDontFollowBack = [...followerSet]
     .filter((u) => !followingSet.has(u))
     .sort((a, b) => a.localeCompare(b));
 
@@ -23,5 +23,5 @@ export function compareFollowLists(
     .filter((u) => followerSet.has(u))
     .sort((a, b) => a.localeCompare(b));
 
-  return { notFollowingBack, fansYouDontFollowBack, mutuals };
+  return { notFollowingBack, peopleYouDontFollowBack, mutuals };
 }
