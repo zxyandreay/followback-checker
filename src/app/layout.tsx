@@ -33,7 +33,7 @@ export default function RootLayout({
         {children}
         <footer className="mt-auto border-t border-zinc-200/80 bg-zinc-100 px-4 py-6 dark:border-zinc-800 dark:bg-zinc-950 sm:px-6">
           <div className="mx-auto max-w-5xl">
-            <SupportKofi variant="compact" />
+            <SupportKofi />
           </div>
         </footer>
       </body>
