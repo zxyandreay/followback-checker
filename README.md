@@ -64,6 +64,12 @@ The site is deployed with GitHub Actions when pushing to `main` (see [.github/wo
 
 Next.js (App Router), TypeScript, Tailwind CSS, client-side parsing with [JSZip](https://www.npmjs.com/package/jszip).
 
+## Support
+
+If you find FollowBack Checker useful, you can support the project here:
+
+https://ko-fi.com/zxyandreay
+
 ## License
 
 See the repository for license information.
