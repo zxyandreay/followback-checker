@@ -1,6 +1,6 @@
 # FollowBack Checker
 
-FollowBack Checker is a privacy-focused web app that compares **your** Instagram **following** and **followers** lists using **Meta’s official data export**. You upload the ZIP or JSON files from that export; the app runs entirely in your browser and helps you see:
+FollowBack Checker is a web app that compares **your** Instagram **following** and **followers** lists using **Meta’s official data export**. You upload the ZIP or JSON files from that export; the app runs entirely in your browser and helps you see:
 
 - **Accounts you follow that do not follow you back**
 - **Followers you do not follow back**
@@ -8,7 +8,7 @@ FollowBack Checker is a privacy-focused web app that compares **your** Instagram
 - Your full **following** list
 - Your full **followers** list
 
-The app does **not** connect to Instagram on your behalf. It does not ask for your Instagram password, username for scraping, or API access—it only reads files you already downloaded from Instagram’s export flow.
+It does **not** require an Instagram login, web scraping, or API access that could violate Instagram or Meta’s terms of service. It only reads files you already obtained through Instagram’s official export flow.
 
 **Live demo:** [https://zxyandreay.github.io/followback-checker/](https://zxyandreay.github.io/followback-checker/)
 
@@ -23,7 +23,7 @@ Source-available for learning and portfolio review. Commercial use requires perm
 - **ZIP upload** — Upload Instagram’s official export archive; the app finds the right JSON inside.
 - **Direct JSON upload** — Upload `following.json` / `following_*.json` and `followers_*.json` without zipping them (multi-select supported).
 - **Local browser processing** — Parsing and comparison run in your browser via client-side JavaScript.
-- **No Instagram login** — This app never asks you to sign in to Instagram.
+- **No Instagram login** — You are not asked to sign in to Instagram in this app.
 - **Comparison + full lists** — Clickable summary counts switch between the five views above (full following, full followers, and the three comparison lists).
 - **Search** — Filter the **currently selected** list by username substring.
 - **CSV export** — Download the **currently selected and filtered** list as CSV.
@@ -33,14 +33,14 @@ Source-available for learning and portfolio review. Commercial use requires perm
 
 ---
 
-## Privacy-first approach
+## No login, scraping, or API use for your lists
 
-- **No Instagram credentials** — Passwords and logins are not collected or used.
-- **No scraping** — The app does not crawl Instagram or third-party profile pages.
-- **No Instagram API** — There is no server-side call to Instagram or Meta APIs for your lists.
-- **Local processing** — Files you choose are read in the browser; list comparison runs on your device.
-- **No upload to this project’s servers** — There is no backend in this stack that receives your export; processing is client-side only for the deployed static app.
-- **Not affiliated with Instagram or Meta** — This is an independent tool. See [Disclaimer](#disclaimer).
+- **No Instagram credentials** — This app does not collect passwords or ask you to authenticate with Instagram.
+- **No scraping** — It does not crawl Instagram or third-party profile pages to build your lists.
+- **No Instagram/Meta API calls for followers or following** — Your lists are not fetched via Instagram or Meta APIs; only JSON from your official export is used.
+- **Local processing** — Files you choose are read in the browser; comparison runs on your device.
+- **No upload to this project’s servers** — The deployed site is static; there is no backend here that receives your export files.
+- **Not affiliated with Instagram or Meta** — Independent tool. See [Disclaimer](#disclaimer).
 
 ---
 
