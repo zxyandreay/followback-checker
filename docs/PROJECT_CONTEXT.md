@@ -1,6 +1,6 @@
 # FollowBack Checker - AI Project Context
 
-This document is the canonical AI handoff for this repository. It is written so
+This document is the canonical handoff for this repository. It is written so
 an assistant can understand what the app is, how it is built, where behavior
 lives, and how to debug or extend it without rediscovering the whole project.
 
