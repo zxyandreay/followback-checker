@@ -3,6 +3,10 @@ type UsernameListProps = {
   emptyMessage: string;
 };
 
+function instagramProfileUrl(username: string): string {
+  return `https://www.instagram.com/${encodeURIComponent(username)}/`;
+}
+
 export function UsernameList({ usernames, emptyMessage }: UsernameListProps) {
   if (usernames.length === 0) {
     return (
@@ -19,7 +23,16 @@ export function UsernameList({ usernames, emptyMessage }: UsernameListProps) {
           key={u}
           className="px-4 py-2.5 font-mono text-sm text-zinc-900 dark:text-zinc-100"
         >
-          @{u}
+          <a
+            href={instagramProfileUrl(u)}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Open @${u} on Instagram`}
+            title={`Open @${u} on Instagram`}
+            className="cursor-pointer underline-offset-2 hover:text-indigo-600 hover:underline dark:hover:text-indigo-400"
+          >
+            @{u}
+          </a>
         </li>
       ))}
     </ul>
