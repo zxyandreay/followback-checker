@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local Git helper scripts
+/commit-and-push.bat
+/restore-commit.bat
