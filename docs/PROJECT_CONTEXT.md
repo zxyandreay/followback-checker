@@ -167,7 +167,7 @@ Important details:
 - `followers_anything.json` is supported.
 - A bare `followers.json` is not currently matched by filename.
 - ZIP member paths may be nested anywhere, as long as the basename matches.
-- The README says files are usually under
+- The user-facing documentation says files are usually under
   `connections/followers_and_following/`, but code does not require that exact
   path.
 - HTML exports are unsupported.
@@ -1362,6 +1362,7 @@ Change page layout, metadata, or footer shell:
 Change static deploy path:
   next.config.ts
   README.md
+  docs/DEVELOPMENT.md
   .github/workflows/deploy.yml if deployment assumptions change
 
 Change visual styling:
