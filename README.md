@@ -1,133 +1,43 @@
 # FollowBack Checker
 
-FollowBack Checker is a web app that compares **your** Instagram **following** and **followers** lists using **Meta’s official data export**. You upload the ZIP or JSON files from that export; the app runs entirely in your browser and helps you see:
+**A privacy-first web app for comparing Instagram followers and following lists from Meta's official data export.**
 
-- **Accounts you follow that do not follow you back**
-- **Followers you do not follow back**
-- **Mutuals** (accounts that follow each other)
-- Your full **following** list
-- Your full **followers** list
+FollowBack Checker helps Instagram users review who does and does not follow them back without logging in, scraping profiles, or using Instagram APIs. Upload the official export ZIP or the relevant JSON files, then the app parses the data locally in your browser and shows clear, searchable result lists.
 
-It does **not** require an Instagram login, web scraping, or API access that could violate Instagram or Meta’s terms of service. It only reads files you already obtained through Instagram’s official export flow.
+[Live Demo](https://zxyandreay.github.io/followback-checker/) | [User Guide](./docs/USER_GUIDE.md) | [Development Guide](./docs/DEVELOPMENT.md)
 
-**Live demo:** [https://zxyandreay.github.io/followback-checker/](https://zxyandreay.github.io/followback-checker/)
+## Highlights
 
-**Repository:** [https://github.com/zxyandreay/followback-checker](https://github.com/zxyandreay/followback-checker)
+- Compare accounts you follow, accounts following you, non-mutual follows, followers you do not follow back, and mutuals.
+- Upload the full Instagram export ZIP or multi-select loose `following.json` / `following_*.json` and `followers_*.json` files.
+- Search within the active result category and export the visible, filtered rows to CSV.
+- Process files in the browser with no Instagram login, backend upload, scraping, or follower API access.
+- Deploy as a static site suitable for GitHub Pages.
 
-Source-available for learning and portfolio review. Commercial use requires permission from the author (see [License](#license)).
+## How It Works
 
----
+1. Request an Instagram / Meta export that includes **Followers and following** in **JSON** format.
+2. Upload the official ZIP or the relationship JSON files to FollowBack Checker.
+3. The app extracts, normalizes, deduplicates, and compares usernames in your browser.
+4. Review the result categories, filter the active list, and export a CSV when needed.
 
-## Key features
+## Tech Stack
 
-- **ZIP upload** — Upload Instagram’s official export archive; the app finds the right JSON inside.
-- **Direct JSON upload** — Upload `following.json` / `following_*.json` and `followers_*.json` without zipping them (multi-select supported).
-- **Local browser processing** — Parsing and comparison run in your browser via client-side JavaScript.
-- **No Instagram login** — You are not asked to sign in to Instagram in this app.
-- **Comparison + full lists** — Clickable summary counts switch between the five views above (full following, full followers, and the three comparison lists).
-- **Search** — Filter the **currently selected** list by username substring.
-- **CSV export** — Download the **currently selected and filtered** list as CSV.
-- **Export guide** — In-app **How to export your data** walkthrough (Accounts Center-oriented); footer shortcuts from errors include **View guide**.
-- **Responsive UI** — Layout works on common screen sizes; styling supports light and dark preferences.
-- **Static hosting** — Built as a static site suitable for GitHub Pages (see [Deployment](#deployment)).
+- **Frontend:** Next.js App Router, React
+- **Language:** TypeScript
+- **Data / Backend:** Browser-local file processing; no backend, database, or account system
+- **Tooling:** Tailwind CSS v4, JSZip, ESLint, Vitest
+- **Deployment:** Static Next.js export to GitHub Pages
 
----
+## Getting Started
 
-## No login, scraping, or API use for your lists
+### Requirements
 
-- **No Instagram credentials** — This app does not collect passwords or ask you to authenticate with Instagram.
-- **No scraping** — It does not crawl Instagram or third-party profile pages to build your lists.
-- **No Instagram/Meta API calls for followers or following** — Your lists are not fetched via Instagram or Meta APIs; only JSON from your official export is used.
-- **Local processing** — Files you choose are read in the browser; comparison runs on your device.
-- **No upload to this project’s servers** — The deployed site is static; there is no backend here that receives your export files.
-- **Not affiliated with Instagram or Meta** — Independent tool. See [Disclaimer](#disclaimer).
+- Node.js 20 or newer
+- npm
+- A modern browser for local use
 
----
-
-## How it works
-
-1. You request and download your information from Instagram / Meta (**Accounts Center** → export/download flow).
-2. You open FollowBack Checker and upload either the **official ZIP** or the relevant **JSON** files.
-3. The app reads Instagram’s follower/following JSON (see [Supported files](#supported-files)), including `followers_*.json` shards and `following.json` (or `following_*.json`).
-4. It builds two username lists (following vs followers), deduplicates, and compares them.
-5. You pick a category via the **summary cards**, optionally **search**, and optionally **Export to CSV** for what you see in that view.
-
----
-
-## How to export Instagram data
-
-Use Meta’s **Download / Export your information** in **Accounts Center** → **Your information and permissions** (wording may vary slightly by locale).
-
-### Recommended settings
-
-| Setting | Recommendation |
-|--------|----------------|
-| **Data to export** | **Followers and following** only (or the smallest scope that includes both). |
-| **Date range** | **All time** |
-| **Format** | **JSON** |
-| **Media quality** | Any option is fine for this app (it does not rely on photos/videos for lists). |
-
-### Why these settings help
-
-- **Followers and following only** keeps the download smaller and faster than exporting your whole account.
-- **All time** helps ensure Instagram includes complete follower/following snapshots rather than a narrow window that might omit data you care about.
-- **JSON** is required because FollowBack Checker parses Instagram’s JSON relationship files. **HTML-only exports are not supported.**
-
-### Where files usually live
-
-Inside the ZIP, relationship JSON is typically under:
-
-`connections/followers_and_following/`
-
-### Important filenames
-
-- `following.json` — and sometimes additional shards named like `following_*.json`
-- `followers_1.json`, `followers_2.json`, … — Instagram splits followers across numbered files when the list is large
-
----
-
-## Supported files
-
-| You can upload | Notes |
-|----------------|--------|
-| **Full Instagram export ZIP** | Must contain the JSON relationship files the app recognizes (see parser logic in `src/lib/instagram-export.ts`). |
-| **`following.json` / `following_*.json`** | Loose files or inside the ZIP. |
-| **`followers_*.json`** | Names match `followers_<something>.json` (e.g. `followers_1.json`). A bare `followers.json` name is **not** matched by the follower shard pattern—use the files Instagram generated. |
-
-If the ZIP has JSON but **none** of the expected follower/following files, the app will tell you it could not find them—often because the export was **HTML-only**, the wrong partial export, or files were moved/renamed.
-
----
-
-## Common upload issues
-
-- **Exported HTML instead of JSON** — The app expects JSON relationship files. HTML-only archives won’t work.
-- **Date range too narrow** — If Instagram omits follower/following shards or leaves lists incomplete, comparisons may be wrong or files may be missing.
-- **Only `following.json` without `followers_*.json`** — Followers shards are required; upload every `followers_*.json` from the export (or use the full ZIP).
-- **Wrong ZIP** — Using an old backup, a different product’s archive, or a trimmed folder may omit `connections/followers_and_following/`.
-- **Export missing Followers and following** — If your request didn’t include that category, the JSON won’t be there.
-- **Renamed or hand-edited JSON** — If filenames no longer match expected patterns and the JSON shape isn’t recognized, files may be skipped or parsing may fail.
-
-When something fails, read the on-screen message—it is aligned with the checks in `parseInstagramExportFromFiles`. The live app also links to **How to export your data** for step-by-step help.
-
----
-
-## Tech stack
-
-From `package.json` and config:
-
-- **Next.js** (App Router), **React**, **TypeScript**
-- **Tailwind CSS** v4 (via PostCSS)
-- **JSZip** — Reading JSON entries from ZIP archives in the browser
-- **ESLint** (`eslint-config-next`)
-- **Vitest** — Unit tests for parsing/helpers (`src/**/*.test.ts`)
-
-Hosted builds use **GitHub Pages** (see below); that is deployment infrastructure, not a runtime dependency of the app logic.
-
----
-
-## Local development
-
-Requirements: **Node.js 20+** recommended (matches CI).
+### Install and Run
 
 ```bash
 git clone https://github.com/zxyandreay/followback-checker.git
@@ -136,93 +46,80 @@ npm install
 npm run dev
 ```
 
-Open **http://localhost:3000/followback-checker** — the project sets Next.js `basePath` to `/followback-checker` so local URLs match the GitHub Pages path.
+Open `http://localhost:3000/followback-checker` if the browser does not open automatically. The app uses `/followback-checker` as its Next.js `basePath` so local URLs match the GitHub Pages deployment path.
 
-**Production build** (static export to `out/`):
+## Usage
 
-```bash
-npm run build
-```
+1. Export Instagram data with **Followers and following**, **All time**, and **JSON** selected.
+2. Upload the ZIP directly, or select `following.json` / `following_*.json` and every `followers_*.json` file from the export.
+3. Choose a result category from the summary counts.
+4. Search the active list or export the currently visible rows to CSV.
 
-Preview the static output with any static file server, for example:
+See the [User Guide](./docs/USER_GUIDE.md) for detailed export settings, supported files, result definitions, and troubleshooting.
 
-```bash
-npx serve out
-```
+## Available Scripts
 
-Then open the site under **`/followback-checker/`** on your preview host (port may vary), e.g. **http://localhost:3000/followback-checker/** when using `serve`.
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the local Next.js development server |
+| `npm run lint` | Run ESLint checks |
+| `npm run test` | Run Vitest unit tests |
+| `npm run build` | Create the static production export in `out/` |
+| `npm run start` | Start the Next.js production server after a build; GitHub Pages uses the static `out/` export instead |
 
-**Other scripts:**
+## Data, Privacy, and Security
 
-```bash
-npm run lint   # ESLint
-npm run test   # Vitest (library tests)
-npm run start  # Next.js production server (not required for static GitHub Pages hosting)
-```
+- **Data storage:** Export files and comparison results are read in browser memory. Refreshing the page or uploading a new export clears the current results.
+- **Network use:** The app is served as a static site and does not upload your export files to this project's servers. Profile links open Instagram only when you click them.
+- **Authentication:** No Instagram credentials, app account, OAuth flow, or API token is required.
+- **Sensitive data:** Instagram exports can contain private relationship data. Do not commit exports, share them publicly, or upload them on devices you do not trust.
+- **Data recovery:** The app does not save, sync, or recover previous uploads. Re-upload the export to regenerate results.
 
----
+## Project Structure
 
-## Deployment
-
-GitHub Actions deploys the static site when you push to **`main`**.
-
-- **Workflow:** [.github/workflows/deploy.yml](.github/workflows/deploy.yml)
-- **Steps:** checkout → Node 20 → `npm ci` → `npm run build` → upload **`out/`** as Pages artifact → deploy to GitHub Pages.
-- **Live URL:** [https://zxyandreay.github.io/followback-checker/](https://zxyandreay.github.io/followback-checker/) (same as the demo link above).
-
-### One-time repository settings
-
-1. **Settings → Pages → Build and deployment** — set **Source** to **GitHub Actions** (not “Deploy from a branch”).
-2. After the first successful run, Pages should serve the built app.
-
-[`public/.nojekyll`](public/.nojekyll) prevents Jekyll from stripping paths like `_next` on GitHub Pages.
-
----
-
-## Project structure
-
-```
+```text
 followback-checker/
-├── .github/workflows/     # GitHub Pages deploy workflow
-├── public/                # Static assets, .nojekyll
-├── src/
-│   ├── app/               # Next.js App Router (layout, home page)
-│   ├── components/        # UI (upload, results, guide, CSV, footer credit)
-│   └── lib/               # Parsing, compare, CSV helpers + tests
-├── next.config.ts         # Static export, basePath / assetPrefix
-├── package.json
-├── tsconfig.json
-└── vitest.config.ts
+|-- .github/workflows/     # GitHub Pages deployment workflow
+|-- docs/                  # User, development, and implementation notes
+|-- public/                # Static assets and .nojekyll for GitHub Pages
+|-- src/
+|   |-- app/               # Next.js App Router page, layout, icon, and styles
+|   |-- components/        # Upload, guide, summary, list, CSV, and footer UI
+|   `-- lib/               # Parsing, comparison, username, CSV helpers, and tests
+|-- next.config.ts         # Static export, basePath, and asset settings
+|-- package.json           # Scripts and dependencies
+`-- vitest.config.ts       # Unit test configuration
 ```
 
----
+## Documentation
 
-## CSV export
+- [User Guide](./docs/USER_GUIDE.md) - Instagram export settings, supported files, results, CSV export, and troubleshooting.
+- [Development Guide](./docs/DEVELOPMENT.md) - Local setup, scripts, validation, and GitHub Pages deployment notes.
+- [Project Context](./docs/PROJECT_CONTEXT.md) - Architecture, parser behavior, maintenance notes, and debugging details.
 
-After results load, choose a category with the **summary cards**, optionally type in **Search**, then click **Export to CSV**. The file includes only the **visible (filtered) usernames** for that category (default filename: `followback-checker-export.csv`). The button is disabled when there are no rows to export.
+## Status and Limitations
 
----
+**Status:** Active source-available personal product and portfolio project.
 
-## Disclaimer
+- Only Instagram / Meta JSON relationship exports are supported. HTML exports, screenshots, manual lists, scraping, and live account sync are not supported.
+- The current parser expects `followers_*.json`; a bare `followers.json` filename is not matched by filename.
+- Very large exports are parsed in browser memory, so performance depends on the user's device and browser.
+- This project is not affiliated with, endorsed by, or connected to Instagram or Meta. Instagram is a trademark of Meta Platforms, Inc.
 
-This project is **not** affiliated with, endorsed by, or connected to Instagram or Meta. **Instagram** is a trademark of Meta Platforms, Inc.
+## Contributing
 
----
-
-## Support
-
-If you find this project useful, you can optionally support the creator on Ko-fi:
-
-https://ko-fi.com/zxyandreay
-
----
+Feedback and issue reports are welcome. This project is primarily maintained as a personal product and portfolio reference, so unsolicited feature pull requests may not be accepted.
 
 ## License
 
-This project is source-available for learning and portfolio review.
+This project is source-available for learning and portfolio review. It is not open source.
 
-You may view and study the code for personal and educational purposes, but you may not copy, redistribute, publish, resell, monetize, or use this project or modified versions commercially without written permission from the author.
+You may view and study the code for personal and educational purposes, but copying, redistribution, publishing, resale, monetization, or commercial use requires written permission from the author.
 
-For commercial use, licensing, or permission requests, please contact the author.
+See [LICENSE](./LICENSE) for the complete terms.
 
-See the [LICENSE](LICENSE) file for details.
+## Author
+
+Built by [zxyandreay](https://github.com/zxyandreay).
+
+[Ko-fi](https://ko-fi.com/zxyandreay)
