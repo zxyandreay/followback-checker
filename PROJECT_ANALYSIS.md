@@ -63,7 +63,7 @@ Coverage is meaningful for the parser, but gaps remain in:
 2. **Robust classification strategy**: both name-based and shape-based detection for loose JSON.
 3. **Graceful failure messages** aligned with common user mistakes in Instagram export settings.
 4. **Simple deterministic core** (sets + sorted arrays) makes behavior easy to reason about.
-5. **Static-host friendly config** (`output: export`, `basePath`, `assetPrefix`).
+5. **Static-host friendly config** (`output: export`) with production paths rooted at `/` for the custom domain.
 
 ## 7) Risks / technical debt
 
@@ -83,7 +83,8 @@ Coverage is meaningful for the parser, but gaps remain in:
 
 ## 9) Deployment and runtime assumptions
 
-- Designed for GitHub Pages path hosting under `/followback-checker`.
+- Designed for GitHub Pages with `https://unfollowing.is-not.cool/` as the canonical root-domain deployment.
+- The `is-not.cool` registry CNAME points the custom domain to `zxyandreay.github.io`; the repository's Pages settings associate that hostname with this project.
 - Client-only parsing means browser compatibility/performance is critical; no server fallback exists.
 - Next.js version is pinned (`16.2.4`) along with React `19.2.4`, reducing drift but requiring deliberate upgrade cadence.
 

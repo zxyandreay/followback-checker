@@ -4,7 +4,7 @@
 
 FollowBack Checker helps Instagram users review who does and does not follow them back without logging in, scraping profiles, or using Instagram APIs. Upload the official export ZIP or the relevant JSON files, then the app parses the data locally in your browser and shows clear, searchable result lists.
 
-[Live Demo](https://zxyandreay.github.io/followback-checker/) | [User Guide](./docs/USER_GUIDE.md) | [Development Guide](./docs/DEVELOPMENT.md)
+[Live Demo](https://unfollowing.is-not.cool/) | [User Guide](./docs/USER_GUIDE.md) | [Development Guide](./docs/DEVELOPMENT.md)
 
 ## Highlights
 
@@ -12,7 +12,7 @@ FollowBack Checker helps Instagram users review who does and does not follow the
 - Upload the full Instagram export ZIP or multi-select loose `following.json` / `following_*.json` and `followers_*.json` files.
 - Search within the active result category and export the visible, filtered rows to CSV.
 - Process files in the browser with no Instagram login, backend upload, scraping, or follower API access.
-- Deploy as a static site suitable for GitHub Pages.
+- Deploy as a static site to GitHub Pages at the custom domain `unfollowing.is-not.cool`.
 
 ## How It Works
 
@@ -27,7 +27,7 @@ FollowBack Checker helps Instagram users review who does and does not follow the
 - **Language:** TypeScript
 - **Data / Backend:** Browser-local file processing; no backend, database, or account system
 - **Tooling:** Tailwind CSS v4, JSZip, ESLint, Vitest
-- **Deployment:** Static Next.js export to GitHub Pages
+- **Deployment:** Static Next.js export to GitHub Pages with `unfollowing.is-not.cool` as the canonical domain
 
 ## Getting Started
 
@@ -46,7 +46,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000/followback-checker` if the browser does not open automatically. The app uses `/followback-checker` as its Next.js `basePath` so local URLs match the GitHub Pages deployment path.
+Open `http://localhost:3000/` if the browser does not open automatically. The app is served from the site root so local routing matches the custom-domain deployment.
 
 ## Usage
 
@@ -86,7 +86,7 @@ followback-checker/
 |   |-- app/               # Next.js App Router page, layout, icon, and styles
 |   |-- components/        # Upload, guide, summary, list, CSV, and footer UI
 |   `-- lib/               # Parsing, comparison, username, CSV helpers, and tests
-|-- next.config.ts         # Static export, basePath, and asset settings
+|-- next.config.ts         # Static export and root-path settings
 |-- package.json           # Scripts and dependencies
 `-- vitest.config.ts       # Unit test configuration
 ```
