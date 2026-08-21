@@ -13,7 +13,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://unfollowing.is-not.cool";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: "/",
+  },
   title: "FollowBack Checker",
   description:
     "Compare Instagram following vs followers from your official data export — processed locally in your browser.",

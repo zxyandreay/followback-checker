@@ -22,16 +22,16 @@ npm run dev
 Open:
 
 ```text
-http://localhost:3000/followback-checker
+http://localhost:3000/
 ```
 
-The `/followback-checker` path is required because `next.config.ts` sets both `basePath` and `assetPrefix` for GitHub Pages.
+The app is served from the site root so local URLs match the custom-domain deployment at `https://unfollowing.is-not.cool/`.
 
 ## Scripts
 
 | Command | Purpose |
 | --- | --- |
-| `npm run dev` | Start the Next.js development server |
+| `npm run dev` | Start the local Next.js development server |
 | `npm run lint` | Run ESLint checks |
 | `npm run test` | Run Vitest unit tests from `src/**/*.test.ts` |
 | `npm run build` | Build the static export into `out/` |
@@ -46,19 +46,19 @@ Static export settings live in [`next.config.ts`](../next.config.ts):
 ```ts
 const nextConfig = {
   output: "export",
-  basePath: "/followback-checker",
-  assetPrefix: "/followback-checker",
   images: {
     unoptimized: true,
   },
 };
 ```
 
-`npm run build` writes the static site to `out/`. The deployed site is intended to be served at:
+`npm run build` writes the static site to `out/`. The canonical deployed site is intended to be served at:
 
 ```text
-https://zxyandreay.github.io/followback-checker/
+https://unfollowing.is-not.cool/
 ```
+
+The custom-domain DNS record is managed by the `is-not.cool` registry and points `unfollowing.is-not.cool` to `zxyandreay.github.io` with a CNAME. The repository itself publishes through a custom GitHub Actions workflow, so GitHub Pages stores the custom-domain association in repository Pages settings; a repository `CNAME` file is not required for this deployment mode.
 
 Deployment is handled by [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) on pushes to `main`:
 
@@ -87,6 +87,7 @@ Current automated tests are library-focused and cover parser and username helper
 
 - Preserve the no-login, no-scraping, no-backend-upload privacy model.
 - Keep the app compatible with static export unless deployment is changed deliberately.
+- Keep production paths rooted at `/` while `unfollowing.is-not.cool` is the canonical deployment domain.
 - Avoid server-only Next.js features that static export cannot support.
 - Update tests and documentation when parser behavior, supported filenames, result categories, or deployment paths change.
 - See [Project Context](./PROJECT_CONTEXT.md) for detailed architecture and debugging notes.
